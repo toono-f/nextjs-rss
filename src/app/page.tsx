@@ -1,6 +1,7 @@
 import Image from "next/image";
 import parse from "html-react-parser";
 import { accounts } from "@/constants/accounts";
+import Link from "next/link";
 
 type Author = {
   name: string;
@@ -44,8 +45,8 @@ export default async function Home({
 }: {
   searchParams: { account?: string };
 }) {
-  // デフォルトのアカウントまたは選択されたアカウント
-  const selectedUsername = searchParams.account || accounts[0].username;
+  const params = await searchParams;
+  const selectedUsername = params.account || accounts[0].username;
   const tweets = await getTweets(selectedUsername);
 
   return (
@@ -54,7 +55,7 @@ export default async function Home({
         {/* サイドバー */}
         <div className="w-[68px] lg:w-[88px] h-screen sticky top-0 flex flex-col items-center border-r border-gray-700">
           {accounts.map((account, index) => (
-            <a
+            <Link
               key={index}
               href={`/?account=${account.username}`}
               className={`p-2 mt-2 rounded-full hover:bg-gray-800 transition-colors ${
@@ -70,7 +71,7 @@ export default async function Home({
                 width={40}
                 height={40}
               />
-            </a>
+            </Link>
           ))}
         </div>
 
