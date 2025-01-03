@@ -1,7 +1,7 @@
 import Image from "next/image";
 import parse from "html-react-parser";
 import { accountUsernames } from "@/constants/accounts";
-import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 
 type Author = {
   name: string;
@@ -70,34 +70,13 @@ export default async function Home({
   return (
     <div className="min-h-screen bg-[#15202b] text-white">
       <div className="flex">
-        {/* サイドバー */}
-        <div className="w-[68px] lg:w-[88px] h-screen sticky top-0 flex flex-col items-center border-r border-gray-700">
-          {accounts.map((account, index) => (
-            <Link
-              key={index}
-              href={`/?account=${account.username}`}
-              className={`p-2 mt-2 rounded-full hover:bg-gray-800 transition-colors ${
-                selectedUsername === account.username
-                  ? "ring-2 ring-blue-500"
-                  : ""
-              }`}
-            >
-              <Image
-                src={account.avatar}
-                alt={account.name}
-                className="w-10 h-10 rounded-full"
-                width={40}
-                height={40}
-              />
-            </Link>
-          ))}
-        </div>
+        <Sidebar accounts={accounts} selectedUsername={selectedUsername} />
 
         {/* メインコンテンツ */}
-        <div className="flex-1">
+        <div className="flex-1 lg:ml-0 mt-16 lg:mt-0">
           <div className="max-w-2xl mx-auto">
-            {/* ヘッダー部分 */}
-            <header className="sticky top-0 z-10 bg-[#15202b]/80 backdrop-blur-sm border-b border-gray-700 p-4">
+            {/* PCのヘッダー */}
+            <header className="hidden lg:block sticky top-0 z-10 bg-[#15202b]/80 backdrop-blur-sm border-b border-gray-700 p-4">
               <h1 className="text-xl font-bold">ホーム</h1>
             </header>
 
@@ -120,14 +99,19 @@ export default async function Home({
                     {/* ツイート本文 */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold">
-                          {tweet.authors[0].name}
-                        </span>
                         <a
                           href={tweet.authors[0].url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-500 text-sm hover:underline hover:text-blue-400"
+                          className="font-bold truncate max-w-[120px] text-sm hover:underline hover:text-blue-400"
+                        >
+                          {tweet.authors[0].name}
+                        </a>
+                        <a
+                          href={tweet.authors[0].url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-500 text-sm hover:underline hover:text-blue-400 truncate max-w-[120px]"
                         >
                           @{extractUsername(tweet.authors[0].url)}
                         </a>
@@ -135,7 +119,7 @@ export default async function Home({
                           href={tweet.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-500 text-sm hover:underline hover:text-blue-400"
+                          className="text-gray-500 text-sm hover:underline hover:text-blue-400 truncate max-w-[100px]"
                         >
                           {formatDate(tweet.date_published)}
                         </a>
