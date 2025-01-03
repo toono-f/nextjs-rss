@@ -10,6 +10,7 @@ body {
 
 .tweet-content {
   word-break: break-all;
+  line-height: 1.75;
 }
 
 .tweet-content a {
