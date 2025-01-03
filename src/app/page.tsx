@@ -3,6 +3,8 @@ import parse from "html-react-parser";
 import { accounts } from "@/constants/accounts";
 import Sidebar from "@/components/Sidebar";
 import CopyButton from "@/components/CopyButton";
+import { formatDate } from "@/lib/formatDate";
+import { extractUsername } from "@/lib/extractUsername";
 
 type Author = {
   name: string;
@@ -149,20 +151,4 @@ export default async function Home({
       </div>
     </div>
   );
-}
-
-// 日付フォーマット用の関数を追加
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-
-  return `${month}月${day}日 ${hours}:${minutes}`;
-}
-
-// ユーザー名を抽出する関数を追加
-function extractUsername(url: string): string {
-  return url.replace("https://x.com/", "");
 }

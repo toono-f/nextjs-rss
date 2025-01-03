@@ -34,4 +34,5 @@ export const accounts = [
     type: "user",
     username: "cursor_ai",
   },
+  // TODO: ユーザーを簡単に追加できるようにしたい
 ] as const;
