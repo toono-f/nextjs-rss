@@ -12,11 +12,27 @@ export const accounts = [
     type: "list",
     listId: "1863684093000749519",
     username: "mylist", // ユニークな識別子として使用
-    avatar: "/x-logo.svg", // リスト用のアイコンを追加する必要があります
+    avatar: "/home.svg", // リスト用のアイコンを追加する必要があります
   },
   {
     type: "user",
     username: "otono_f",
+  },
+  {
+    type: "user",
+    username: "fffff3434",
+  },
+  {
+    type: "user",
+    username: "cursor_ai",
+  },
+  {
+    type: "user",
+    username: "vercel",
+  },
+  {
+    type: "user",
+    username: "micro_cms",
   },
   {
     type: "user",
@@ -26,13 +42,6 @@ export const accounts = [
     type: "user",
     username: "catnose99",
   },
-  {
-    type: "user",
-    username: "micro_cms",
-  },
-  {
-    type: "user",
-    username: "cursor_ai",
-  },
+
   // TODO: ユーザーを簡単に追加できるようにしたい
 ] as const;

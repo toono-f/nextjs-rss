@@ -26,7 +26,7 @@ export default function Sidebar({ accounts, selectedUsername }: SidebarProps) {
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0
         transition duration-200 ease-in-out
-        w-[68px] lg:w-[88px] h-screen
+        w-[60px] lg:w-[72px] h-screen
         bg-[#15202b]
         flex flex-col items-center
         border-r border-gray-700
@@ -38,7 +38,7 @@ export default function Sidebar({ accounts, selectedUsername }: SidebarProps) {
             key={index}
             href={`/?account=${account.username}`}
             onClick={() => setIsSidebarOpen(false)}
-            className={`p-2 mt-2 rounded-full hover:bg-gray-800 transition-colors ${
+            className={`p-1.5 mt-2 rounded-full hover:bg-gray-800 transition-colors ${
               selectedUsername === account.username
                 ? "ring-2 ring-blue-500"
                 : ""
@@ -47,9 +47,9 @@ export default function Sidebar({ accounts, selectedUsername }: SidebarProps) {
             <Image
               src={account.avatar}
               alt={account.username}
-              className="w-10 h-10 rounded-full"
-              width={40}
-              height={40}
+              className="w-8 h-8 rounded-full"
+              width={32}
+              height={32}
             />
           </Link>
         ))}
