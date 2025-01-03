@@ -28,3 +28,9 @@ docker compose up -d
 ```bash
 npm run dev
 ```
+
+## RSSHubの停止
+
+```bash
+docker compose down
+```
