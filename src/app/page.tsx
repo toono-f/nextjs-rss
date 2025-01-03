@@ -1,6 +1,6 @@
 import Image from "next/image";
 import parse from "html-react-parser";
-import { accounts } from "@/constants/accounts";
+import { accountUsernames } from "@/constants/accounts";
 import Link from "next/link";
 
 type Author = {
@@ -18,25 +18,34 @@ type TweetItem = {
   authors: Author[];
 };
 
-async function getTweets(username: string) {
+async function fetchUserData(username: string) {
   const url = `http://localhost:1200/twitter/user/${username}?format=json`;
   // 開発環境だけログを出す
   if (process.env.NODE_ENV === "development") console.log(url);
 
   const res = await fetch(url);
-
   if (!res.ok) {
-    throw new Error("Failed to fetch tweets");
+    throw new Error(`Failed to fetch data for ${username}`);
   }
-  const jsonData = await res.json();
+  const data = await res.json();
 
-  // リプライを除外（content_htmlに"Re @"が含まれているものを除外）
-  const filteredItems: TweetItem[] = jsonData.items.filter(
-    (item: TweetItem) => !item.content_html.includes("Re @")
-  );
+  // アカウント情報を抽出
+  const accountInfo = {
+    name: data.items[0].authors[0].name,
+    username: username,
+    avatar: data.items[0].authors[0].avatar,
+  };
+
+  // リプライを除外したツイート一覧
+  const tweets = {
+    items: data.items.filter(
+      (item: TweetItem) => !item.content_html.includes("Re @")
+    ),
+  };
 
   return {
-    items: filteredItems,
+    accountInfo,
+    tweets,
   };
 }
 
@@ -46,8 +55,20 @@ export default async function Home({
   searchParams: { account?: string };
 }) {
   const params = await searchParams;
-  const selectedUsername = params.account || accounts[0].username;
-  const tweets = await getTweets(selectedUsername);
+  const selectedUsername = params.account || accountUsernames[0];
+
+  // すべてのアカウントのデータを並行して取得
+  const allAccountsData = await Promise.all(
+    accountUsernames.map((username) => fetchUserData(username))
+  );
+
+  // アカウント情報の配列を作成
+  const accounts = allAccountsData.map((data) => data.accountInfo);
+
+  // 選択されたアカウントのツイートを取得
+  const tweets = allAccountsData.find(
+    (data) => data.accountInfo.username === selectedUsername
+  )?.tweets || { items: [] };
 
   return (
     <div className="min-h-screen bg-[#15202b] text-white">
