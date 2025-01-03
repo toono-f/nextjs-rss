@@ -90,9 +90,9 @@ export default async function Home({
                       <Image
                         src={tweet.authors[0].avatar}
                         alt="Profile Icon"
-                        className="w-12 h-12 rounded-full"
-                        width={48}
-                        height={48}
+                        className="w-10 h-10 rounded-full"
+                        width={40}
+                        height={40}
                       />
                     </div>
 
@@ -111,7 +111,7 @@ export default async function Home({
                           href={tweet.authors[0].url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-500 text-sm hover:underline hover:text-blue-400 truncate max-w-[120px]"
+                          className="text-gray-500 text-sm hover:underline hover:text-blue-400 truncate max-w-[100px]"
                         >
                           @{extractUsername(tweet.authors[0].url)}
                         </a>
