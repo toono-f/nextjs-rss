@@ -2,6 +2,7 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import { accounts } from "@/constants/accounts";
 import Sidebar from "@/components/Sidebar";
+import CopyButton from "@/components/CopyButton";
 
 type Author = {
   name: string;
@@ -95,9 +96,8 @@ export default async function Home({
             {/* ツイート一覧 */}
             <main className="divide-y divide-gray-700">
               {tweets.items?.map((tweet: TweetItem) => (
-                <div key={tweet.id} className="p-4">
+                <div key={tweet.id} className="pt-4 px-4 pb-2">
                   <div className="flex gap-3">
-                    {/* プロフィール画像 */}
                     <div className="flex-shrink-0">
                       <Image
                         src={tweet.authors[0].avatar}
@@ -108,7 +108,6 @@ export default async function Home({
                       />
                     </div>
 
-                    {/* ツイート本文 */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <a
@@ -136,8 +135,9 @@ export default async function Home({
                           {formatDate(tweet.date_published)}
                         </a>
                       </div>
-                      <div className="text-sm tweet-content">
+                      <div className="text-sm tweet-content group relative pb-8">
                         {parse(tweet.content_html)}
+                        <CopyButton url={tweet.url} />
                       </div>
                     </div>
                   </div>
