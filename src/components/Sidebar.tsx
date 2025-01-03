@@ -6,7 +6,6 @@ import Image from "next/image";
 
 type SidebarProps = {
   accounts: {
-    name: string;
     username: string;
     avatar: string;
   }[];
@@ -47,7 +46,7 @@ export default function Sidebar({ accounts, selectedUsername }: SidebarProps) {
           >
             <Image
               src={account.avatar}
-              alt={account.name}
+              alt={account.username}
               className="w-10 h-10 rounded-full"
               width={40}
               height={40}
