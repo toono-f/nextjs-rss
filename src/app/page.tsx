@@ -39,19 +39,22 @@ export default async function Home() {
   const tweets = await getTweets();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#15202b] text-white">
       <div className="max-w-2xl mx-auto">
         {/* ヘッダー部分 */}
-        <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-gray-700 p-4">
+        <header className="sticky top-0 z-10 bg-[#15202b]/80 backdrop-blur-sm border-b border-gray-700 p-4">
           <h1 className="text-xl font-bold">ホーム</h1>
         </header>
 
         {/* ツイート一覧 */}
         <main className="divide-y divide-gray-700">
           {tweets.items?.map((tweet: TweetItem) => (
-            <article
+            <a
               key={tweet.id}
-              className="p-4 hover:bg-gray-900 transition-colors"
+              href={tweet.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-4 hover:bg-gray-900 transition-colors block"
             >
               <div className="flex gap-3">
                 {/* プロフィール画像 */}
@@ -70,16 +73,35 @@ export default async function Home() {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-bold">{tweet.authors[0].name}</span>
                     <span className="text-gray-500">
-                      @{tweet.authors[0].url}
+                      @{extractUsername(tweet.authors[0].url)}
+                    </span>
+                    <span className="text-gray-500 text-sm">
+                      {formatDate(tweet.date_published)}
                     </span>
                   </div>
                   <p className="text-sm">{parse(tweet.content_html)}</p>
                 </div>
               </div>
-            </article>
+            </a>
           ))}
         </main>
       </div>
     </div>
   );
+}
+
+// 日付フォーマット用の関数を追加
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${month}/${day} ${hours}:${minutes}`;
+}
+
+// ユーザー名を抽出する関数を追加
+function extractUsername(url: string): string {
+  return url.replace("https://x.com/", "");
 }
