@@ -7,3 +7,7 @@ body {
   background: #15202b;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.tweet-content a {
+  @apply hover:underline hover:text-blue-400 relative z-[1];
+}

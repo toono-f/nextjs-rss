@@ -19,14 +19,14 @@ type TweetItem = {
 };
 
 async function fetchUserData(username: string) {
-  const url = `http://localhost:1200/twitter/user/${username}?format=json`;
+  // 参考: https://docs.rsshub.app/routes/social-media#x-twitter
+  const url = `http://localhost:1200/twitter/user/${username}/readable&includeRts=false&excludeReplies=true&&showEmojiForRetweetAndReply=true&addLinkForPics=true&showQuotedAuthorAvatarInDesc=true&format=json`;
+
   // 開発環境だけログを出す
   if (process.env.NODE_ENV === "development") console.log(url);
 
   const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch data for ${username}`);
-  }
+  if (!res.ok) throw new Error(`Failed to fetch data for ${username}`);
   const data = await res.json();
 
   // アカウント情報を抽出
@@ -36,11 +36,8 @@ async function fetchUserData(username: string) {
     avatar: data.items[0].authors[0].avatar,
   };
 
-  // リプライを除外したツイート一覧
   const tweets = {
-    items: data.items.filter(
-      (item: TweetItem) => !item.content_html.includes("Re @")
-    ),
+    items: data.items,
   };
 
   return {
@@ -107,13 +104,7 @@ export default async function Home({
             {/* ツイート一覧 */}
             <main className="divide-y divide-gray-700">
               {tweets.items?.map((tweet: TweetItem) => (
-                <a
-                  key={tweet.id}
-                  href={tweet.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 hover:bg-gray-900 transition-colors block"
-                >
+                <div key={tweet.id} className="p-4">
                   <div className="flex gap-3">
                     {/* プロフィール画像 */}
                     <div className="flex-shrink-0">
@@ -132,17 +123,29 @@ export default async function Home({
                         <span className="font-bold">
                           {tweet.authors[0].name}
                         </span>
-                        <span className="text-gray-500">
+                        <a
+                          href={tweet.authors[0].url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-500 text-sm hover:underline hover:text-blue-400"
+                        >
                           @{extractUsername(tweet.authors[0].url)}
-                        </span>
-                        <span className="text-gray-500 text-sm">
+                        </a>
+                        <a
+                          href={tweet.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-500 text-sm hover:underline hover:text-blue-400"
+                        >
                           {formatDate(tweet.date_published)}
-                        </span>
+                        </a>
                       </div>
-                      <div className="text-sm">{parse(tweet.content_html)}</div>
+                      <div className="text-sm tweet-content">
+                        {parse(tweet.content_html)}
+                      </div>
                     </div>
                   </div>
-                </a>
+                </div>
               ))}
             </main>
           </div>
