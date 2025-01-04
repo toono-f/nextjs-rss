@@ -20,7 +20,7 @@ export default function Sidebar({ accounts, selectedUsername }: SidebarProps) {
       {/* サイドバー */}
       <div
         className={`
-        fixed lg:relative
+        fixed lg:fixed
         inset-y-0 left-0
         transform lg:transform-none
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
